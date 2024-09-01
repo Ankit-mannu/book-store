@@ -80,21 +80,84 @@ const router = express.Router();
 router.route('/').post(authorization, createBook);
 
 /**
- * @swagger
- * /api/books/:
- *   get:
- *     summary: Book list.
- *     responses:
- *       200:
- *         description: A list of books.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- */
-router.route('/').get(getBooks);
+     * @swagger
+     * /api/books/:
+     *   get:
+     *     summary: Get a list of books.
+     *     description: Retrieve books based on title, author, genre, and apply pagination.
+     *     parameters:
+     *       - in: query
+     *         name: title
+     *         schema:
+     *           type: string
+     *         description: The title of the book.
+     *         example: Science
+     *       - in: query
+     *         name: author
+     *         schema:
+     *           type: string
+     *         description: The author of the book.
+     *         example: John Doe
+     *       - in: query
+     *         name: genre
+     *         schema:
+     *           type: string
+     *         description: The genre of the book.
+     *         example: Fiction
+     *       - in: query
+     *         name: page
+     *         schema:
+     *           type: integer
+     *           default: 1
+     *         description: The page number for pagination.
+     *         example: 1
+     *       - in: query
+     *         name: pageSize
+     *         schema:
+     *           type: integer
+     *           default: 10
+     *         description: The number of books per page.
+     *         example: 10
+     *     responses:
+     *       200:
+     *         description: A list of books with pagination details.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 books:
+     *                   type: array
+     *                   items:
+     *                     type: object
+     *                     properties:
+     *                       _id:
+     *                         type: string
+     *                         description: The book ID.
+     *                       title:
+     *                         type: string
+     *                         description: The title of the book.
+     *                       author:
+     *                         type: string
+     *                         description: The author of the book.
+     *                       genre:
+     *                         type: string
+     *                         description: The genre of the book.
+     *                       description:
+     *                         type: string
+     *                         description: A brief description of the book.
+     *       500:
+     *         description: Server error
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 error:
+     *                   type: string
+     *                   example: Server error
+     */
+    router.route('/').get(getBooks);
 
 
 /**
