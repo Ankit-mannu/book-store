@@ -22,7 +22,7 @@ const createBook = async (req, res) => {
 };
 
 const getBooks = async (req, res) => {
-    const { title, author, genre } = req.query;
+    const { title, author, genre, page, pageSize } = req.query;
     const query = {};
 
     if (title) query.title = new RegExp(title, 'i');
@@ -30,8 +30,16 @@ const getBooks = async (req, res) => {
     if (genre) query.genre = new RegExp(genre, 'i');
 
     try {
-        const books = await Book.find(query);
-        res.json(books);
+        const books = await Book.find(query)
+            .skip((page - 1) * pageSize)
+            .limit(parseInt(pageSize));
+
+        const totalBooks = await Book.countDocuments(query);
+        const totalPages = Math.ceil(totalBooks / pageSize);
+
+        res.json({
+            books,
+        });
     } catch (err) {
         res.status(500).json({ error: 'Server error' });
     }
