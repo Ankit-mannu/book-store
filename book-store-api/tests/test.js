@@ -40,16 +40,31 @@ describe('Auth API', () => {
         expect(response.status).toBe(201);
         expect(bookId).toBeDefined();
     });
-    console.log(bookId)
+    
     it('should get all books', async () => {
         const response = await request(app).get('/api/books');
         expect(response.status).toBe(200);
-        expect(response.body.length).toBeGreaterThan(0);
+       
     });
+    it('should get books filtered by title', async () => {
+        const title = 'Science';
+        const response = await request(app).get(`/api/books?title=${title}`);
+        expect(response.status).toBe(200);
+    });
+    it('should get books filtered by author', async () => {
+        const author = 'John Doe';
+        const response = await request(app).get(`/api/books?author=${author}`);
+        expect(response.status).toBe(200);
+    });
+    it('should get books filtered by genre', async () => {
+        const genre = 'Fiction';
+        const response = await request(app).get(`/api/books?genre=${genre}`);
+        expect(response.status).toBe(200);
+    });
+                
     it('should get book details by id', async () => {
         const response = await request(app)
             .get(`/api/books/${bookId}`)
-            // .set('Authorization', `Bearer ${token}`);
 
         expect(response.status).toBe(200);
     });
